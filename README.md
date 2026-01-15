@@ -153,16 +153,46 @@ Then open **http://localhost:8080** in your browser.
 2. Set source to `main` branch
 3. Access at `https://john-aloha.github.io/brain-builder`
 
+### Option 3: Docker 🐳
+
+```bash
+# Clone the repository
+git clone https://github.com/john-aloha/brain-builder.git
+cd brain-builder
+
+# Build and run with Docker Compose
+docker-compose up -d
+
+# Or build and run manually
+docker build -t brain-builder .
+docker run -d -p 8080:80 --name brain-builder-app brain-builder
+```
+
+Then open **http://localhost:8080** in your browser.
+
+#### Docker Commands
+
+| Command | Description |
+|---------|-------------|
+| `docker-compose up -d` | Start the container in detached mode |
+| `docker-compose down` | Stop and remove the container |
+| `docker-compose logs -f` | View container logs |
+| `docker-compose ps` | Check container status |
+
 ---
 
 ## 📁 Project Structure
 
 ```
 brain-builder/
-├── index.html      # Game structure and all screens
-├── styles.css      # Modern dark theme with strategy-specific colors
-├── game.js         # Game logic, state management, and interactions
-└── README.md       # This file
+├── index.html          # Game structure and all screens
+├── styles.css          # Modern dark theme with strategy-specific colors
+├── game.js             # Game logic, state management, and interactions
+├── Dockerfile          # Docker image configuration
+├── docker-compose.yml  # Docker Compose orchestration
+├── nginx.conf          # Nginx server configuration
+├── .dockerignore       # Files excluded from Docker build
+└── README.md           # This file
 ```
 
 ### Key Files
