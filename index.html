@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Memory Strategy Simulator - Experience and compare different memory techniques from Psychology 101">
+    <title>Memory Strategy Simulator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Welcome Screen -->
+        <section id="screen-welcome" class="screen active">
+            <div class="screen-content">
+                <div class="welcome-icon">🧠</div>
+                <h1>Memory Strategy Simulator</h1>
+                <p class="subtitle">Experience how psychologists study memory</p>
+
+                <div class="intro-card">
+                    <h2>How It Works</h2>
+                    <div class="steps">
+                        <div class="step">
+                            <span class="step-num">1</span>
+                            <span>You'll see lists of items to memorize</span>
+                        </div>
+                        <div class="step">
+                            <span class="step-num">2</span>
+                            <span>Choose a memory strategy to use</span>
+                        </div>
+                        <div class="step">
+                            <span class="step-num">3</span>
+                            <span>Experience the strategy firsthand</span>
+                        </div>
+                        <div class="step">
+                            <span class="step-num">4</span>
+                            <span>Test your recall and see what works!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="strategies-preview">
+                    <h3>The 4 Strategies You'll Test</h3>
+                    <div class="strategy-pills">
+                        <span class="pill rote">🔁 Rote Rehearsal</span>
+                        <span class="pill chunking">📦 Chunking</span>
+                        <span class="pill mnemonic">🎵 Mnemonics</span>
+                        <span class="pill loci">🏛️ Method of Loci</span>
+                    </div>
+                </div>
+
+                <button id="btn-start" class="btn-primary">
+                    Start Experiment
+                    <span class="btn-arrow">→</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Round Intro Screen -->
+        <section id="screen-round-intro" class="screen">
+            <div class="screen-content">
+                <div class="round-badge">Round <span id="round-number">1</span> of 5</div>
+                <h2>Memory Challenge</h2>
+                <p class="challenge-desc">Memorize these <span id="item-count">8</span> items:</p>
+
+                <div class="items-display" id="items-to-memorize">
+                    <!-- Items will be inserted here -->
+                </div>
+
+                <div class="timer-display">
+                    <span class="timer-label">Study time remaining:</span>
+                    <span class="timer-value" id="study-timer">15</span>
+                </div>
+
+                <p class="hint-text">Look carefully! You'll choose a strategy next.</p>
+            </div>
+        </section>
+
+        <!-- Strategy Selection Screen -->
+        <section id="screen-strategy" class="screen">
+            <div class="screen-content">
+                <h2>Choose Your Strategy</h2>
+                <p class="subtitle">How will you try to remember the items?</p>
+
+                <div class="strategy-cards">
+                    <button class="strategy-card" data-strategy="rote">
+                        <div class="strategy-icon">🔁</div>
+                        <h3>Rote Rehearsal</h3>
+                        <p>Repeat each item over and over until it sticks</p>
+                        <span class="strategy-tag">Simple but slow</span>
+                    </button>
+
+                    <button class="strategy-card" data-strategy="chunking">
+                        <div class="strategy-icon">📦</div>
+                        <h3>Chunking</h3>
+                        <p>Group items into meaningful categories</p>
+                        <span class="strategy-tag">Organize to remember</span>
+                    </button>
+
+                    <button class="strategy-card" data-strategy="mnemonic">
+                        <div class="strategy-icon">🎵</div>
+                        <h3>Mnemonic Device</h3>
+                        <p>Create an acronym or memorable phrase</p>
+                        <span class="strategy-tag">Creative & catchy</span>
+                    </button>
+
+                    <button class="strategy-card" data-strategy="loci">
+                        <div class="strategy-icon">🏛️</div>
+                        <h3>Method of Loci</h3>
+                        <p>Place items in a mental "memory palace"</p>
+                        <span class="strategy-tag">Visual & spatial</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rote Rehearsal Experience -->
+        <section id="screen-rote" class="screen strategy-screen">
+            <div class="screen-content">
+                <div class="strategy-header">
+                    <span class="strategy-badge rote">🔁 Rote Rehearsal</span>
+                    <p>Type each item 3 times to "rehearse" it</p>
+                </div>
+
+                <div class="rote-container">
+                    <div class="current-word" id="rote-word">APPLE</div>
+                    <input type="text" id="rote-input" class="rote-input" placeholder="Type the word..."
+                        autocomplete="off">
+                    <div class="rote-progress">
+                        <span id="rote-count">0</span> / <span id="rote-total">24</span> repetitions
+                    </div>
+                    <div class="rote-progress-bar">
+                        <div class="rote-progress-fill" id="rote-progress-fill"></div>
+                    </div>
+                </div>
+
+                <p class="strategy-reflection">Notice how this feels... Is it engaging or tedious?</p>
+            </div>
+        </section>
+
+        <!-- Chunking Experience -->
+        <section id="screen-chunking" class="screen strategy-screen">
+            <div class="screen-content">
+                <div class="strategy-header">
+                    <span class="strategy-badge chunking">📦 Chunking</span>
+                    <p>Drag items into logical groups to organize them</p>
+                </div>
+
+                <div class="chunking-container">
+                    <div class="chunk-source" id="chunk-source">
+                        <!-- Draggable items will be inserted here -->
+                    </div>
+
+                    <div class="chunk-zones">
+                        <div class="chunk-zone" data-zone="1">
+                            <span class="zone-label">Group 1</span>
+                            <div class="zone-items"></div>
+                        </div>
+                        <div class="chunk-zone" data-zone="2">
+                            <span class="zone-label">Group 2</span>
+                            <div class="zone-items"></div>
+                        </div>
+                        <div class="chunk-zone" data-zone="3">
+                            <span class="zone-label">Group 3</span>
+                            <div class="zone-items"></div>
+                        </div>
+                    </div>
+
+                    <button id="btn-chunking-done" class="btn-primary" disabled>
+                        Done Organizing
+                    </button>
+                </div>
+
+                <p class="strategy-reflection">Grouping related items helps your brain process them as units!</p>
+            </div>
+        </section>
+
+        <!-- Mnemonic Experience -->
+        <section id="screen-mnemonic" class="screen strategy-screen">
+            <div class="screen-content">
+                <div class="strategy-header">
+                    <span class="strategy-badge mnemonic">🎵 Mnemonic Device</span>
+                    <p>Create a memorable phrase using the first letters</p>
+                </div>
+
+                <div class="mnemonic-container">
+                    <div class="mnemonic-letters">
+                        <span class="mnemonic-label">First letters:</span>
+                        <div class="letters-display" id="mnemonic-letters">
+                            <!-- Letters will be shown here -->
+                        </div>
+                    </div>
+
+                    <div class="mnemonic-items" id="mnemonic-items">
+                        <!-- Full items for reference -->
+                    </div>
+
+                    <div class="mnemonic-input-group">
+                        <label for="mnemonic-phrase">Your mnemonic phrase:</label>
+                        <input type="text" id="mnemonic-phrase" class="mnemonic-input"
+                            placeholder="e.g., 'Every Good Boy Does Fine'">
+                        <p class="mnemonic-hint">Make it silly or memorable — those stick best!</p>
+                    </div>
+
+                    <button id="btn-mnemonic-done" class="btn-primary">
+                        I've Got It Memorized
+                    </button>
+                </div>
+
+                <p class="strategy-reflection">A good mnemonic turns random items into a memorable story!</p>
+            </div>
+        </section>
+
+        <!-- Method of Loci Experience -->
+        <section id="screen-loci" class="screen strategy-screen">
+            <div class="screen-content">
+                <div class="strategy-header">
+                    <span class="strategy-badge loci">🏛️ Method of Loci</span>
+                    <p>Place each item in a room of your memory palace</p>
+                </div>
+
+                <div class="loci-container">
+                    <div class="palace-rooms">
+                        <div class="palace-room" data-room="entrance">
+                            <span class="room-icon">🚪</span>
+                            <span class="room-name">Entrance</span>
+                            <div class="room-item" data-slot="0"></div>
+                        </div>
+                        <div class="palace-room" data-room="living">
+                            <span class="room-icon">🛋️</span>
+                            <span class="room-name">Living Room</span>
+                            <div class="room-item" data-slot="1"></div>
+                        </div>
+                        <div class="palace-room" data-room="kitchen">
+                            <span class="room-icon">🍳</span>
+                            <span class="room-name">Kitchen</span>
+                            <div class="room-item" data-slot="2"></div>
+                        </div>
+                        <div class="palace-room" data-room="bedroom">
+                            <span class="room-icon">🛏️</span>
+                            <span class="room-name">Bedroom</span>
+                            <div class="room-item" data-slot="3"></div>
+                        </div>
+                        <div class="palace-room" data-room="bathroom">
+                            <span class="room-icon">🚿</span>
+                            <span class="room-name">Bathroom</span>
+                            <div class="room-item" data-slot="4"></div>
+                        </div>
+                        <div class="palace-room" data-room="garden">
+                            <span class="room-icon">🌳</span>
+                            <span class="room-name">Garden</span>
+                            <div class="room-item" data-slot="5"></div>
+                        </div>
+                        <div class="palace-room" data-room="garage">
+                            <span class="room-icon">🚗</span>
+                            <span class="room-name">Garage</span>
+                            <div class="room-item" data-slot="6"></div>
+                        </div>
+                        <div class="palace-room" data-room="attic">
+                            <span class="room-icon">📦</span>
+                            <span class="room-name">Attic</span>
+                            <div class="room-item" data-slot="7"></div>
+                        </div>
+                    </div>
+
+                    <div class="loci-items" id="loci-items">
+                        <!-- Draggable items -->
+                    </div>
+
+                    <button id="btn-loci-done" class="btn-primary" disabled>
+                        I Can Walk Through My Palace
+                    </button>
+                </div>
+
+                <p class="strategy-reflection">Imagine walking through these rooms — what do you "see" in each?</p>
+            </div>
+        </section>
+
+        <!-- Recall Test Screen -->
+        <section id="screen-recall" class="screen">
+            <div class="screen-content">
+                <h2>Recall Test</h2>
+                <p class="subtitle">Type all the items you can remember (press Enter after each)</p>
+
+                <div class="recall-container">
+                    <div class="recall-input-area">
+                        <input type="text" id="recall-input" class="recall-input"
+                            placeholder="Type an item and press Enter..." autocomplete="off">
+                    </div>
+
+                    <div class="recalled-items" id="recalled-items">
+                        <!-- Recalled items will appear here -->
+                    </div>
+
+                    <div class="recall-stats">
+                        <span class="recall-count"><span id="recall-count">0</span> items recalled</span>
+                        <span class="recall-timer">Time: <span id="recall-timer">30</span>s</span>
+                    </div>
+
+                    <button id="btn-recall-done" class="btn-secondary">
+                        I Can't Remember Any More
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Round Results Screen -->
+        <section id="screen-round-results" class="screen">
+            <div class="screen-content">
+                <h2>Round <span id="result-round">1</span> Results</h2>
+
+                <div class="results-card">
+                    <div class="result-strategy">
+                        <span class="result-strategy-badge" id="result-strategy-badge">🔁 Rote Rehearsal</span>
+                    </div>
+
+                    <div class="result-score">
+                        <span class="score-number" id="result-correct">6</span>
+                        <span class="score-label">out of <span id="result-total">8</span> items</span>
+                    </div>
+
+                    <div class="result-percentage">
+                        <div class="percentage-bar">
+                            <div class="percentage-fill" id="result-percentage-fill"></div>
+                        </div>
+                        <span class="percentage-text" id="result-percentage">75%</span>
+                    </div>
+
+                    <div class="result-items">
+                        <div class="items-list correct">
+                            <h4>✓ Remembered</h4>
+                            <div id="result-remembered"></div>
+                        </div>
+                        <div class="items-list missed">
+                            <h4>✗ Forgot</h4>
+                            <div id="result-forgot"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="psychology-insight" id="psychology-insight">
+                    <!-- Dynamic insight based on strategy used -->
+                </div>
+
+                <button id="btn-next-round" class="btn-primary">
+                    Next Round
+                    <span class="btn-arrow">→</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Final Exam Screen -->
+        <section id="screen-final-exam" class="screen">
+            <div class="screen-content">
+                <div class="exam-header">
+                    <span class="exam-badge">🎓 Final Exam</span>
+                    <h2>Long-Term Recall Test</h2>
+                    <p>Can you remember items from ALL previous rounds?</p>
+                </div>
+
+                <div class="exam-container">
+                    <div class="exam-input-area">
+                        <input type="text" id="exam-input" class="recall-input"
+                            placeholder="Type any item from any round..." autocomplete="off">
+                    </div>
+
+                    <div class="exam-recalled" id="exam-recalled">
+                        <!-- Recalled items will appear here -->
+                    </div>
+
+                    <div class="exam-stats">
+                        <span class="exam-count"><span id="exam-count">0</span> / <span id="exam-total">40</span>
+                            items</span>
+                        <span class="exam-timer">Time: <span id="exam-timer">60</span>s</span>
+                    </div>
+
+                    <button id="btn-exam-done" class="btn-secondary">
+                        I'm Done
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Results Screen -->
+        <section id="screen-final-results" class="screen">
+            <div class="screen-content">
+                <h2>Your Memory Profile</h2>
+                <p class="subtitle">Here's how each strategy worked for YOU</p>
+
+                <div class="final-results-grid">
+                    <div class="strategy-result" data-strategy="rote">
+                        <div class="strategy-result-header">
+                            <span class="strategy-icon">🔁</span>
+                            <span>Rote Rehearsal</span>
+                        </div>
+                        <div class="strategy-scores">
+                            <div class="score-item">
+                                <span class="score-label">Immediate:</span>
+                                <span class="score-value" id="final-rote-immediate">-</span>
+                            </div>
+                            <div class="score-item">
+                                <span class="score-label">Long-term:</span>
+                                <span class="score-value" id="final-rote-longterm">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-result" data-strategy="chunking">
+                        <div class="strategy-result-header">
+                            <span class="strategy-icon">📦</span>
+                            <span>Chunking</span>
+                        </div>
+                        <div class="strategy-scores">
+                            <div class="score-item">
+                                <span class="score-label">Immediate:</span>
+                                <span class="score-value" id="final-chunking-immediate">-</span>
+                            </div>
+                            <div class="score-item">
+                                <span class="score-label">Long-term:</span>
+                                <span class="score-value" id="final-chunking-longterm">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-result" data-strategy="mnemonic">
+                        <div class="strategy-result-header">
+                            <span class="strategy-icon">🎵</span>
+                            <span>Mnemonics</span>
+                        </div>
+                        <div class="strategy-scores">
+                            <div class="score-item">
+                                <span class="score-label">Immediate:</span>
+                                <span class="score-value" id="final-mnemonic-immediate">-</span>
+                            </div>
+                            <div class="score-item">
+                                <span class="score-label">Long-term:</span>
+                                <span class="score-value" id="final-mnemonic-longterm">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-result" data-strategy="loci">
+                        <div class="strategy-result-header">
+                            <span class="strategy-icon">🏛️</span>
+                            <span>Method of Loci</span>
+                        </div>
+                        <div class="strategy-scores">
+                            <div class="score-item">
+                                <span class="score-label">Immediate:</span>
+                                <span class="score-value" id="final-loci-immediate">-</span>
+                            </div>
+                            <div class="score-item">
+                                <span class="score-label">Long-term:</span>
+                                <span class="score-value" id="final-loci-longterm">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="best-strategy" id="best-strategy">
+                    <!-- Will show which strategy worked best -->
+                </div>
+
+                <div class="debrief-section">
+                    <h3>📝 Reflection Questions</h3>
+                    <ol class="debrief-questions">
+                        <li>Which strategy felt the most natural to you? Why?</li>
+                        <li>Were you surprised by which strategy worked best?</li>
+                        <li>How might you use these strategies when studying for real exams?</li>
+                        <li>Why do you think some strategies work better for long-term memory?</li>
+                    </ol>
+                </div>
+
+                <div class="psychology-summary">
+                    <h3>🧠 What Psychology Research Tells Us</h3>
+                    <div class="research-findings">
+                        <div class="finding">
+                            <strong>Rote Rehearsal:</strong> Works for short-term, but fades quickly.
+                            Most students rely on this, but it's the least effective.
+                        </div>
+                        <div class="finding">
+                            <strong>Chunking:</strong> Reduces cognitive load by organizing information.
+                            Phone numbers use this (555-123-4567 instead of 5551234567).
+                        </div>
+                        <div class="finding">
+                            <strong>Mnemonics:</strong> Creates meaningful connections.
+                            "Every Good Boy Does Fine" has helped millions learn musical notes.
+                        </div>
+                        <div class="finding">
+                            <strong>Method of Loci:</strong> Ancient Greek technique, still one of the most powerful.
+                            Memory champions use this to memorize decks of cards in minutes.
+                        </div>
+                    </div>
+                </div>
+
+                <button id="btn-restart" class="btn-primary">
+                    Try Again
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>
