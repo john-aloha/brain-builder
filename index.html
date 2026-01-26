@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <base href="/brain-builder/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
         content="Memory Strategy Simulator - Experience and compare different memory techniques from Psychology 101">
@@ -46,12 +47,15 @@
                 </div>
 
                 <div class="strategies-preview">
-                    <h3>The 4 Strategies You'll Test</h3>
+                    <h3>The 7 Strategies You Can Test</h3>
                     <div class="strategy-pills">
                         <span class="pill rote">🔁 Rote Rehearsal</span>
                         <span class="pill chunking">📦 Chunking</span>
                         <span class="pill mnemonic">🎵 Mnemonics</span>
                         <span class="pill loci">🏛️ Method of Loci</span>
+                        <span class="pill story">📖 Story Method</span>
+                        <span class="pill visualization">🎨 Visualization</span>
+                        <span class="pill peg">🔢 Peg System</span>
                     </div>
                 </div>
 
@@ -62,10 +66,77 @@
             </div>
         </section>
 
+        <!-- Baseline Intro Screen -->
+        <section id="screen-baseline-intro" class="screen">
+            <div class="screen-content">
+                <div class="baseline-badge">Baseline Test</div>
+                <h2>First, Let's See Your Natural Memory</h2>
+                <p class="challenge-desc">Before learning any strategies, memorize these <strong>8 items</strong> however you like:</p>
+
+                <div class="items-display" id="baseline-items-to-memorize">
+                    <!-- Items will be inserted here -->
+                </div>
+
+                <div class="timer-display">
+                    <span class="timer-label">Study time remaining:</span>
+                    <span class="timer-value" id="baseline-study-timer">15</span>
+                </div>
+
+                <p class="hint-text">No special technique — just do what comes naturally to you.</p>
+            </div>
+        </section>
+
+        <!-- Baseline Results Screen -->
+        <section id="screen-baseline-results" class="screen">
+            <div class="screen-content">
+                <h2>Baseline Results</h2>
+                <p class="subtitle">This is your natural memory without any strategy</p>
+
+                <div class="results-card baseline-results-card">
+                    <div class="result-strategy">
+                        <span class="result-strategy-badge baseline-badge">📊 No Strategy (Control)</span>
+                    </div>
+
+                    <div class="result-score">
+                        <span class="score-number" id="baseline-result-correct">0</span>
+                        <span class="score-label">out of <span id="baseline-result-total">8</span> items</span>
+                    </div>
+
+                    <div class="result-percentage">
+                        <div class="percentage-bar">
+                            <div class="percentage-fill" id="baseline-percentage-fill"></div>
+                        </div>
+                        <span class="percentage-text" id="baseline-result-percentage">0%</span>
+                    </div>
+
+                    <div class="result-items">
+                        <div class="items-list correct">
+                            <h4>Remembered</h4>
+                            <div id="baseline-result-remembered"></div>
+                        </div>
+                        <div class="items-list missed">
+                            <h4>Forgot</h4>
+                            <div id="baseline-result-forgot"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="psychology-insight baseline-insight">
+                    <h4>Why Start With a Baseline?</h4>
+                    <p>In psychology research, we always measure performance <em>before</em> any intervention. This "control condition" lets you see exactly how much each memory strategy improves your recall compared to just trying to remember naturally.</p>
+                </div>
+
+                <button id="btn-continue-strategies" class="btn-primary">
+                    Now Try the Memory Strategies
+                    <span class="btn-arrow">→</span>
+                </button>
+            </div>
+        </section>
+
         <!-- Round Intro Screen -->
         <section id="screen-round-intro" class="screen">
             <div class="screen-content">
-                <div class="round-badge">Round <span id="round-number">1</span> of 5</div>
+                <div class="round-badge">Round <span id="round-number">1</span> of <span id="total-rounds">7</span></div>
                 <h2>Memory Challenge</h2>
                 <p class="challenge-desc">Memorize these <span id="item-count">8</span> items:</p>
 
@@ -115,6 +186,27 @@
                         <h3>Method of Loci</h3>
                         <p>Place items in a mental "memory palace"</p>
                         <span class="strategy-tag">Visual & spatial</span>
+                    </button>
+
+                    <button class="strategy-card" data-strategy="story">
+                        <div class="strategy-icon">📖</div>
+                        <h3>Story Method</h3>
+                        <p>Create a narrative linking all items together</p>
+                        <span class="strategy-tag">Narrative chaining</span>
+                    </button>
+
+                    <button class="strategy-card" data-strategy="visualization">
+                        <div class="strategy-icon">🎨</div>
+                        <h3>Visualization</h3>
+                        <p>Create vivid mental images for each item</p>
+                        <span class="strategy-tag">Picture superiority</span>
+                    </button>
+
+                    <button class="strategy-card" data-strategy="peg">
+                        <div class="strategy-icon">🔢</div>
+                        <h3>Peg System</h3>
+                        <p>Link items to pre-memorized number-rhymes</p>
+                        <span class="strategy-tag">Ancient technique</span>
                     </button>
                 </div>
             </div>
@@ -282,6 +374,111 @@
             </div>
         </section>
 
+        <!-- Story Method Experience -->
+        <section id="screen-story" class="screen strategy-screen">
+            <div class="screen-content">
+                <div class="strategy-header">
+                    <span class="strategy-badge story">📖 Story Method</span>
+                    <p>Create a story that links all items together in order</p>
+                </div>
+
+                <div class="story-container">
+                    <div class="story-items" id="story-items">
+                        <!-- Items will be displayed here -->
+                    </div>
+
+                    <div class="story-input-group">
+                        <label for="story-input">Your story:</label>
+                        <textarea id="story-input" class="story-input" rows="6"
+                            placeholder="Write a short story that includes all items in order..."></textarea>
+                        <p class="story-hint">The more vivid, absurd, or emotional — the better you'll remember!</p>
+                    </div>
+
+                    <button id="btn-story-done" class="btn-primary">
+                        I've Created My Story
+                    </button>
+                </div>
+
+                <p class="strategy-reflection">Our brains are wired for narratives — use that to your advantage!</p>
+            </div>
+        </section>
+
+        <!-- Visualization Experience -->
+        <section id="screen-visualization" class="screen strategy-screen">
+            <div class="screen-content">
+                <div class="strategy-header">
+                    <span class="strategy-badge visualization">🎨 Visualization</span>
+                    <p>Create vivid mental images for each item</p>
+                </div>
+
+                <div class="visualization-container">
+                    <div class="visualization-items" id="visualization-items">
+                        <!-- Visualization cards will be inserted here -->
+                    </div>
+
+                    <button id="btn-visualization-done" class="btn-primary">
+                        I Can See Them All
+                    </button>
+                </div>
+
+                <p class="strategy-reflection">Make each image bizarre, colorful, or moving — static images fade faster!</p>
+            </div>
+        </section>
+
+        <!-- Peg System Experience -->
+        <section id="screen-peg" class="screen strategy-screen">
+            <div class="screen-content">
+                <div class="strategy-header">
+                    <span class="strategy-badge peg">🔢 Peg System</span>
+                    <p>Link each item to a number-rhyme peg word</p>
+                </div>
+
+                <div class="peg-intro">
+                    <p>The pegs are: <strong>1-Bun, 2-Shoe, 3-Tree, 4-Door, 5-Hive, 6-Sticks, 7-Heaven, 8-Gate</strong></p>
+                    <p class="peg-instruction">Visualize each item interacting with its peg!</p>
+                </div>
+
+                <div class="peg-container">
+                    <div class="peg-pairs" id="peg-pairs">
+                        <!-- Peg pairs will be inserted here -->
+                    </div>
+
+                    <button id="btn-peg-done" class="btn-primary">
+                        I Can See All the Pairs
+                    </button>
+                </div>
+
+                <p class="strategy-reflection">Imagine the peg and item interacting — the stranger the scene, the better!</p>
+            </div>
+        </section>
+
+        <!-- Distractor Task Screen -->
+        <section id="screen-distractor" class="screen">
+            <div class="screen-content">
+                <div class="distractor-header">
+                    <span class="distractor-badge">Mental Break</span>
+                    <h2>Quick Math Challenge</h2>
+                    <p>Solve these problems before your memory test!</p>
+                </div>
+
+                <div class="distractor-container">
+                    <div class="math-problem" id="math-problem">47 + 28 = ?</div>
+
+                    <input type="number" id="distractor-input" class="distractor-input"
+                        placeholder="Your answer..." autocomplete="off">
+
+                    <div class="distractor-stats">
+                        <span class="problems-solved">Problems solved: <span id="problems-solved">0</span></span>
+                        <span class="distractor-timer">Time: <span id="distractor-timer">30</span>s</span>
+                    </div>
+                </div>
+
+                <div class="distractor-explanation">
+                    <p><em>Why this task?</em> In memory research, a "distractor task" prevents you from mentally rehearsing. This tests how well you truly encoded the information!</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Recall Test Screen -->
         <section id="screen-recall" class="screen">
             <div class="screen-content">
@@ -393,74 +590,29 @@
                 <h2>Your Memory Profile</h2>
                 <p class="subtitle">Here's how each strategy worked for YOU</p>
 
-                <div class="final-results-grid">
-                    <div class="strategy-result" data-strategy="rote">
+                <!-- Baseline Result (Control) -->
+                <div class="baseline-final-result">
+                    <div class="strategy-result baseline" data-strategy="baseline">
                         <div class="strategy-result-header">
-                            <span class="strategy-icon">🔁</span>
-                            <span>Rote Rehearsal</span>
+                            <span class="strategy-icon">📊</span>
+                            <span>Baseline (No Strategy)</span>
                         </div>
                         <div class="strategy-scores">
                             <div class="score-item">
                                 <span class="score-label">Immediate:</span>
-                                <span class="score-value" id="final-rote-immediate">-</span>
+                                <span class="score-value" id="final-baseline-immediate">-</span>
                             </div>
                             <div class="score-item">
                                 <span class="score-label">Long-term:</span>
-                                <span class="score-value" id="final-rote-longterm">-</span>
+                                <span class="score-value" id="final-baseline-longterm">-</span>
                             </div>
                         </div>
                     </div>
+                    <p class="baseline-note">Compare each strategy's results to this baseline to see real improvement!</p>
+                </div>
 
-                    <div class="strategy-result" data-strategy="chunking">
-                        <div class="strategy-result-header">
-                            <span class="strategy-icon">📦</span>
-                            <span>Chunking</span>
-                        </div>
-                        <div class="strategy-scores">
-                            <div class="score-item">
-                                <span class="score-label">Immediate:</span>
-                                <span class="score-value" id="final-chunking-immediate">-</span>
-                            </div>
-                            <div class="score-item">
-                                <span class="score-label">Long-term:</span>
-                                <span class="score-value" id="final-chunking-longterm">-</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="strategy-result" data-strategy="mnemonic">
-                        <div class="strategy-result-header">
-                            <span class="strategy-icon">🎵</span>
-                            <span>Mnemonics</span>
-                        </div>
-                        <div class="strategy-scores">
-                            <div class="score-item">
-                                <span class="score-label">Immediate:</span>
-                                <span class="score-value" id="final-mnemonic-immediate">-</span>
-                            </div>
-                            <div class="score-item">
-                                <span class="score-label">Long-term:</span>
-                                <span class="score-value" id="final-mnemonic-longterm">-</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="strategy-result" data-strategy="loci">
-                        <div class="strategy-result-header">
-                            <span class="strategy-icon">🏛️</span>
-                            <span>Method of Loci</span>
-                        </div>
-                        <div class="strategy-scores">
-                            <div class="score-item">
-                                <span class="score-label">Immediate:</span>
-                                <span class="score-value" id="final-loci-immediate">-</span>
-                            </div>
-                            <div class="score-item">
-                                <span class="score-label">Long-term:</span>
-                                <span class="score-value" id="final-loci-longterm">-</span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="final-results-grid" id="final-results-grid">
+                    <!-- Strategy results will be generated dynamically -->
                 </div>
 
                 <div class="best-strategy" id="best-strategy">

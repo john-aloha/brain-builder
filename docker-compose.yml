@@ -1,15 +1,20 @@
-version: '3.8'
-
 services:
   brain-builder:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: brain-builder-app
-    ports:
-      - "8080:80"
+    container_name: brain-builder
     restart: unless-stopped
-    # Resource limits for production
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.brain-builder.rule=Host(`apps.aloha.university`) && PathPrefix(`/brain-builder`)"
+      - "traefik.http.routers.brain-builder.entrypoints=websecure"
+      - "traefik.http.routers.brain-builder.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.brain-builder.middlewares=brain-builder-strip"
+      - "traefik.http.middlewares.brain-builder-strip.stripprefix.prefixes=/brain-builder"
+      - "traefik.http.services.brain-builder.loadbalancer.server.port=80"
     deploy:
       resources:
         limits:
@@ -18,10 +23,13 @@ services:
         reservations:
           cpus: '0.1'
           memory: 32M
-    # Health check
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 10s
+
+networks:
+  web:
+    external: true
